@@ -14,7 +14,7 @@ export default function EditorFile() {
 
     const DB_URL = "https://exam-4d98a-default-rtdb.europe-west1.firebasedatabase.app/exam/v1";
 
-    const [user, setUser] = useState("");
+    const [user, setUser] = useState('');
     const [codes, setCodes] = useState(["", "", "", ""]);
     const [outputs, setOutputs] = useState(["", "", "", ""]);
     const [message, setMessage] = useState("");
@@ -29,7 +29,15 @@ export default function EditorFile() {
         if (submitted === "true") {
             setIsSubmitted(true);
         }
+        const saveUser = localStorage.getItem('user')
+        if (saveUser) {
+            setUser(saveUser)
+        } 
     }, []);
+
+    useEffect(() => {
+        localStorage.setItem('user', user)
+    }, [user])
 
     // 🔹 изменение кода
     const handleChange = (index, value) => {
@@ -150,6 +158,7 @@ export default function EditorFile() {
             <select
                 disabled={isSubmitted}
                 onChange={(e) => setUser(e.target.value)}
+                value={user}
                 className="bg-[#14213d] text-white px-5 py-3 w-full max-w-md rounded-2xl border border-[#fca311]"
             >
                 <option value="">Есімің</option>
