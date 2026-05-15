@@ -1,0 +1,13 @@
+# netlify.toml
+[build]
+  command = "npm run build"    # команда сборки (не трогаем)
+  publish = "dist"             # папка с готовым билдом
+
+[build.environment]
+  NODE_VERSION = "20"          # версия Node
+
+# SPA Redirect: все запросы идут на index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
