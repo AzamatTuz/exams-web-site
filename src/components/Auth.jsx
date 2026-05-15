@@ -4,7 +4,6 @@ import { auth, provider } from "../firebase";
 
 export default function Auth({ user, setUser }) {
 
-    // 🔹 загрузка пользователя из firebase (если уже залогинен)
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((currentUser) => {
             if (currentUser) {
@@ -22,7 +21,7 @@ export default function Auth({ user, setUser }) {
         return () => unsubscribe();
     }, []);
 
-    // 🔹 вход
+  
     const login = async () => {
         try {
             const result = await signInWithPopup(auth, provider);
@@ -41,7 +40,7 @@ export default function Auth({ user, setUser }) {
         }
     };
 
-    // 🔹 выход
+
     const logout = async () => {
         await signOut(auth);
         setUser(null);
