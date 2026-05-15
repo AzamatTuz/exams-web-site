@@ -32,7 +32,7 @@ export default function AdminRoute({
     const ADMINS=[
 
         "tuzelbajazamat361@gmail.com",
-        "Erdauitakhmetov06@gmail.com"
+        "erdauitakhmetov06@gmail.com"
 
     ];
 

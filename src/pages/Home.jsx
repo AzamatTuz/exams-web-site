@@ -52,7 +52,7 @@ export default function Home() {
     const admins = [
 
         "tuzelbajazamat361@gmail.com",
-        "Erdauitakhmetov06@gmail.com"
+        "erdauitakhmetov06@gmail.com"
 
     ];
 
