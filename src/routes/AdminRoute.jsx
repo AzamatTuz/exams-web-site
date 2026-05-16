@@ -5,7 +5,8 @@ export default function AdminRoute({ children }) {
 
     const ADMINS = [
         "tuzelbajazamat361@gmail.com",
-        "erdauitakhmetov06@gmail.com"
+        "erdauitakhmetov06@gmail.com",
+        "asylbekerkinbek0@gmail.com"
     ];
 
     if (!user) {
