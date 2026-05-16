@@ -171,13 +171,14 @@ export default function EditorFile() {
                     <p className="text-gray-300 mt-4 text-xl">Дата: {exam.date}</p>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-10">
+                <div className={`grid gap-10 ${exam.tasks.length > 3 ? 'grid-cols-2' : 'grid-cols-1'}`}>
                     {exam.tasks.map((task, i) => (
                         <div
                             key={i}
-                            className="bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 p-8 shadow-xl"
+                            className="bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 p-8 shadow-xl flex flex-col items-center"
                         >
-                            <div className="flex justify-between mb-5">
+                            <article className=" w-full">
+                                <div className="flex justify-between mb-5">
                                 <h2 className="text-[#fca311] font-black text-2xl">
                                     Задание {i + 1}
                                 </h2>
@@ -187,9 +188,10 @@ export default function EditorFile() {
                                     <p className="mt-4 text-white max-w-sm">{task}</p>
                                 </details>
                             </div>
+                            </article>
 
                             <Editor
-                                height="300px"
+                                height="400px"
                                 language="javascript"
                                 theme="vs-dark"
                                 value={codes[i]}
@@ -203,12 +205,12 @@ export default function EditorFile() {
                             <button
                                 disabled={isSubmitted}
                                 onClick={() => runCode(i)}
-                                className="mt-5 bg-[#fca311] hover:bg-[#ffb703] px-6 py-3 rounded-2xl font-bold"
+                                className="mt-5 bg-[#fca311] hover:bg-[#ffb703] px-6 py-3 rounded-2xl font-bold cursor-pointer"
                             >
                                 Проверить
                             </button>
 
-                            <pre className="bg-black/50 mt-5 rounded-2xl p-5 text-white h-28 overflow-auto">
+                            <pre className="bg-black/50 mt-5 rounded-2xl p-5 text-white h-28 overflow-auto w-full">
                                 {outputs[i]}
                             </pre>
                         </div>

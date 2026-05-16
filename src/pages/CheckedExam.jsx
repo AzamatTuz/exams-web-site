@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
 import { getSubmits } from "../api/examApi";
+import { log } from "firebase/firestore/pipelines";
 
 export default function CheckedExam() {
     const { id } = useParams();
@@ -34,27 +35,20 @@ export default function CheckedExam() {
                     Архив проверенных
                 </h1>
 
-                {Object.entries(students).map(([id, student]) => (
+                {Object.entries(students).sort((a, b) => b[1].totalScore - a[1].totalScore).map(([id, student]) => (
                     <div
                         key={id}
-                        className="bg-[#1b263b] rounded-3xl p-8 mb-8"
+                        className="bg-[#1b263b] rounded-3xl p-8 mb-8 flex items-center justify-between"
                     >
                         <h2 className="text-white text-2xl font-bold">
                             {student.name}
                         </h2>
 
-                        <p className="text-[#fca311] mt-4">
+                        <p className="text-[#fca311] font-black text-xl">
                             Балл: {student.totalScore || student.score}
                         </p>
 
-                        {student.codes?.map((code, i) => (
-                            <pre
-                                key={i}
-                                className="bg-black p-5 rounded-xl mt-4 overflow-auto text-white"
-                            >
-                                {code}
-                            </pre>
-                        ))}
+
                     </div>
                 ))}
             </div>
