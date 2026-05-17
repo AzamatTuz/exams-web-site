@@ -105,7 +105,7 @@ export default function EditorFile() {
             localStorage.removeItem(storageKey);
 
             setIsSubmitted(true);
-            setMessage("Экзамен отправлен ✅");
+            setMessage("Экзамен отправлен");
             setShowConfirm(false);
             setCodes([]);
         } catch (e) {
@@ -179,26 +179,48 @@ export default function EditorFile() {
                         >
                             <article className=" w-full">
                                 <div className="flex justify-between mb-5">
-                                <h2 className="text-[#fca311] font-black text-2xl">
-                                    Задание {i + 1}
-                                </h2>
+                                    <h2 className="text-[#fca311] font-black text-2xl">
+                                        Задание {i + 1}
+                                    </h2>
 
-                                <details>
-                                    <summary className="cursor-pointer text-gray-300">Показать</summary>
-                                    <p className="mt-4 text-white max-w-sm">{task}</p>
-                                </details>
-                            </div>
+                                    <details>
+                                        <summary className="cursor-pointer text-gray-300">Показать</summary>
+                                        <p className="mt-4 text-white max-w-sm">{task}</p>
+                                    </details>
+                                </div>
                             </article>
 
                             <Editor
-                                height="400px"
+                                height="300px"
                                 language="javascript"
                                 theme="vs-dark"
                                 value={codes[i]}
                                 onChange={(v) => handleChange(i, v)}
+                                onMount={(editor) => {
+                                    editor.onKeyDown((e) => {
+                                        const ctrl = e.ctrlKey || e.metaKey;
+
+                                        if (
+                                            ctrl &&
+                                            ["KeyC", "KeyV", "KeyX", "KeyA"].includes(e.code)
+                                        ) {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                        }
+                                    });
+
+                                    const node = editor.getDomNode();
+
+                                    node?.addEventListener("paste", (e) => e.preventDefault());
+                                    node?.addEventListener("copy", (e) => e.preventDefault());
+                                    node?.addEventListener("cut", (e) => e.preventDefault());
+                                    node?.addEventListener("contextmenu", (e) => e.preventDefault());
+                                }}
                                 options={{
                                     readOnly: isSubmitted,
-                                    minimap: { enabled: false }
+                                    minimap: { enabled: false },
+                                    contextmenu: false,
+                                    copyWithSyntaxHighlighting: false
                                 }}
                             />
 

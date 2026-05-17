@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
-import { getExams, deleteExam } from "../api/examApi";
+import { getExams, deleteExam, getSubmits } from "../api/examApi";
 
 export default function Admin() {
     const navigate = useNavigate();
@@ -11,6 +11,7 @@ export default function Admin() {
     const [loading, setLoading] = useState(true);
     const [showDelete, setShowDelete] = useState(false);
     const [selectedId, setSelectedId] = useState(null);
+    const [unchecked, setUnchecked] = useState({});
 
     useEffect(() => {
         load();
@@ -20,6 +21,17 @@ export default function Admin() {
         try {
             const res = await getExams();
             setExams(res.data || {});
+
+            const counts = {};
+
+            for (const examId of Object.keys(res.data || {})) {
+                const submits = await getSubmits(examId);
+                const students = Object.values(submits.data || {});
+
+                counts[examId] = students.filter(s => !s.checked).length;
+            }
+
+            setUnchecked(counts);
             setLoading(false);
         } catch (e) {
             console.log(e);
@@ -40,7 +52,6 @@ export default function Admin() {
         <div className="min-h-screen bg-gradient-to-br from-[#0d1b2a] via-[#1b263b] to-[#415a77]">
             <Navbar />
 
-            {/* MODAL */}
             {showDelete && (
                 <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
                     <div className="bg-[#1b263b] border border-white/10 rounded-3xl p-10 w-[420px] shadow-2xl">
@@ -55,14 +66,14 @@ export default function Admin() {
                         <div className="flex gap-4 mt-10">
                             <button
                                 onClick={() => remove(selectedId)}
-                                className="flex-1 bg-red-500 py-3 rounded-xl font-bold hover:bg-red-600 transition cursor-pointer"
+                                className="flex-1 bg-red-500 py-3 rounded-xl font-bold hover:bg-red-600 transition duration-300 ease-in-out cursor-pointer"
                             >
                                 Удалить
                             </button>
 
                             <button
                                 onClick={() => setShowDelete(false)}
-                                className="flex-1 bg-gray-700 py-3 rounded-xl font-bold text-white hover:bg-gray-600 transition cursor-pointer"
+                                className="flex-1 bg-gray-700 py-3 rounded-xl font-bold cursor-pointer"
                             >
                                 Отмена
                             </button>
@@ -73,23 +84,19 @@ export default function Admin() {
 
             <div className="max-w-7xl mx-auto p-10">
                 <div className="flex justify-between items-center mb-10">
-                    <h1 className="text-5xl font-black text-white">
+                    <h1 className="text-5xl font-black text-white ">
                         Админ панель
                     </h1>
 
                     <button
                         onClick={() => navigate("/admin/create")}
-                        className="bg-[#fca311] hover:bg-[#ffb703] px-8 py-4 rounded-2xl font-bold cursor-pointer transition duration-300"
+                        className="bg-[#fca311] px-8 py-4 rounded-2xl font-bold cursor-pointer"
                     >
                         Создать экзамен
                     </button>
                 </div>
 
-                {loading && (
-                    <p className="text-white text-xl">
-                        Загрузка...
-                    </p>
-                )}
+                {loading && <p className="text-white">Загрузка...</p>}
 
                 <div className="grid md:grid-cols-2 gap-8">
                     {Object.entries(exams).map(([id, exam]) => (
@@ -109,24 +116,28 @@ export default function Admin() {
                                 Заданий: {exam.tasks?.length || 0}
                             </p>
 
+                            <p className="text-red-400 mt-2 font-bold">
+                                Не проверено: {unchecked[id] || 0}
+                            </p>
+
                             <div className="grid grid-cols-2 gap-4 mt-8">
                                 <button
                                     onClick={() => navigate(`/check/${id}`)}
-                                    className="bg-blue-500 py-3 rounded-xl font-bold hover:bg-blue-600 transition cursor-pointer"
+                                    className="bg-blue-500 py-3 rounded-xl font-bold hover:bg-blue-400 transition duration-300 ease-in-out cursor-pointer"
                                 >
                                     Проверка
                                 </button>
 
                                 <button
                                     onClick={() => navigate(`/checked/${id}`)}
-                                    className="bg-green-500 py-3 rounded-xl font-bold hover:bg-green-600 transition cursor-pointer"
+                                    className="bg-green-500 py-3 rounded-xl font-bold hover:bg-green-400 transition duration-300 ease-in-out cursor-pointer"
                                 >
                                     Архив
                                 </button>
 
                                 <button
                                     onClick={() => navigate(`/exam/${id}`)}
-                                    className="bg-[#fca311] py-3 rounded-xl font-bold hover:bg-[#ff9d00] transition cursor-pointer"
+                                    className="bg-[#fca311] py-3 rounded-xl font-bold hover:bg-amber-500 transition duration-300 ease-in-out cursor-pointer"
                                 >
                                     Открыть
                                 </button>
@@ -136,7 +147,7 @@ export default function Admin() {
                                         setSelectedId(id);
                                         setShowDelete(true);
                                     }}
-                                    className="bg-red-500 py-3 rounded-xl font-bold hover:bg-red-600 transition cursor-pointer"
+                                    className="bg-red-500 py-3 rounded-xl font-bold hover:bg-red-600 transition duration-300 ease-in-out cursor-pointer"
                                 >
                                     Удалить
                                 </button>
@@ -144,18 +155,6 @@ export default function Admin() {
                         </div>
                     ))}
                 </div>
-
-                {!loading && Object.keys(exams).length === 0 && (
-                    <div className="bg-[#1b263b] rounded-3xl p-12 text-center mt-10">
-                        <h2 className="text-white text-3xl">
-                            Экзаменов нет
-                        </h2>
-
-                        <p className="text-gray-400 mt-4">
-                            Создай первый экзамен
-                        </p>
-                    </div>
-                )}
             </div>
         </div>
     );
