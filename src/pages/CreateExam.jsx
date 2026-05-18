@@ -89,7 +89,7 @@ export default function CreateExam() {
                         </h2>
 
                         <p className="text-white text-xl mt-6">
-                            {popup.text} {popup.type === "success" ? "✅" : "⚠️"}
+                            {popup.text} {popup.type === "success" ? "" : "⚠️"}
                         </p>
 
                         <button

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import ExamCard from "../components/ExamCard";
+import ExamCard from "../components/Home/ExamCard.jsx";
 import { getExams, getStudentResult } from "../api/examApi";
 import { useNavigate } from "react-router-dom";
 
