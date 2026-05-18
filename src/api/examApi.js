@@ -1,4 +1,8 @@
 import axios from "axios";
+import {ref,remove} from "firebase/database";
+
+import { database } from "../firebase";
+
 
 const DB =
     "https://exam-4d98a-default-rtdb.europe-west1.firebasedatabase.app";
@@ -18,9 +22,13 @@ export const getExam = (id) =>
 export const createExam = (data) =>
     axios.post(`${DB}/exams.json`, data);
 
-export const deleteExam = (id) =>
-    axios.delete(`${DB}/exams/${id}.json`);
-
+export async function deleteExam(examId) {
+    await Promise.all([
+        remove(ref(database, `exams/${examId}`)),
+        remove(ref(database, `submits/${examId}`)),
+        remove(ref(database, `checked/${examId}`))
+    ]);
+}
 /*
 ======================
 SUBMITS
