@@ -1,28 +1,28 @@
 import Editor from "@monaco-editor/react";
 
 export default function ExamCard({
-                                     i,
-                                     task,
-                                     codes,
-                                     outputs,
-                                     handleChange,
-                                     runCode,
-                                     isSubmitted
-                                 }) {
+    i,
+    task,
+    codes,
+    outputs,
+    handleChange,
+    runCode,
+    isSubmitted
+}) {
     return (
         <div className="bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 p-8 shadow-xl flex flex-col items-center">
             <article className="w-full">
-                <div className="flex justify-between mb-5">
+                <div className="flex flex-col justify-between mb-5">
                     <h2 className="text-[#fca311] font-black text-2xl">
                         Задание {i + 1}
                     </h2>
 
-                    <details>
+                    <details className="mt-5">
                         <summary className="cursor-pointer text-gray-300">
                             Показать
                         </summary>
 
-                        <p className="mt-4 text-white max-w-sm">
+                        <p className="mt-4 text-white max-w-sm whitespace-pre-wrap overflow-x-auto">
                             {task}
                         </p>
                     </details>
@@ -47,7 +47,7 @@ export default function ExamCard({
                     blockedKeys.forEach((key) => {
                         editor.addCommand(
                             monaco.KeyMod.CtrlCmd | key,
-                            () => {}
+                            () => { }
                         );
                     });
 
