@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import Navbar from "../components/Navbar";
-import { getExam, submitExam, getStudentResult } from "../api/examApi";
+import Navbar from "../widgets/navbar/Navbar.jsx";
+import { getExam, submitExam, getStudentResult } from "../features/exam/api/examApi.js";
 
 import ExamLoading from "../components/Editor/ExamLoading.jsx";
-import SubmitModal from "../components/Editor/SubmitModal.jsx";
-import MessagePopup from "../components/Editor/MessagePopup.jsx";
-import ExamHeader from "../components/Editor/ExamHeader.jsx";
-import ExamCard from "../components/Editor/ExamCard.jsx";
-import TabTracker from "../components/TabTracker";
+import SubmitModal from "../widgets/submit-modal/SubmitModal.jsx";
+import MessagePopup from "../widgets/popup/MessagePopup.jsx";
+import ExamHeader from "../widgets/exam-header/ExamHeader.jsx";
+import ExamCard from "../features/exam/ui/ExamCard.jsx";
+import TabTracker from "../features/tab-tracker/ui/TabTracker.jsx";
 
 export default function EditorFile() {
     const { id } = useParams();

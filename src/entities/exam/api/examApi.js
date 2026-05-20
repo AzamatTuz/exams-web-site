@@ -1,7 +1,10 @@
 import axios from "axios";
 import {ref,remove} from "firebase/database";
-
-import { database } from "../firebase";
+import {
+    update
+}
+    from "firebase/database";
+import { database } from "../../../shared/api/firebase.js";
 
 
 const DB =
@@ -76,3 +79,25 @@ export const getScores = (examId) =>
 
 export const getSubmits = (examId) =>
     axios.get(`${DB}/submits/${examId}.json`);
+
+export async function updateScore(
+    examId,
+    studentId,
+    score
+){
+
+    await update(
+        ref(
+            database,
+            `submits/${examId}/${studentId}`
+        ),
+        {
+            totalScore:
+                Number(score),
+
+            score:
+                Number(score)
+        }
+    );
+
+}

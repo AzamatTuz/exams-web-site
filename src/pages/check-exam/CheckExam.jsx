@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import Navbar from "../components/Navbar";
-import Student from "../components/Student";
+import Navbar from "../widgets/navbar/Navbar.jsx";
+import Student from "../entities/student/ui/Student.jsx";
 
-import { getSubmits, checkStudent } from "../api/examApi";
+import { getSubmits, checkStudent } from "../features/exam/api/examApi.js";
 
 export default function CheckExam() {
     const { id } = useParams();

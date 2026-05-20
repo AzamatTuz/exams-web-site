@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../widgets/navbar/Navbar.jsx";
 import ExamCard from "../components/Home/ExamCard.jsx";
-import { getExams, getStudentResult } from "../api/examApi";
+import { getExams, getStudentResult } from "../features/exam/api/examApi.js";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {

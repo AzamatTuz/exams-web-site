@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { signInWithPopup, signOut } from "firebase/auth";
-import { auth, provider } from "../firebase";
+import { auth, provider } from "../shared/api/firebase.js";
 
 export default function Auth({ user, setUser }) {
 

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Navbar from "../components/Navbar";
-import { createExam } from "../api/examApi";
+import Navbar from "../widgets/navbar/Navbar.jsx";
+import { createExam } from "../features/exam/api/examApi.js";
 
 export default function CreateExam() {
     const navigate = useNavigate();

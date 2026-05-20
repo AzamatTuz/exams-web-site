@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Navbar from "../components/Navbar";
-import { getExams, deleteExam, getSubmits } from "../api/examApi";
+import Navbar from "../widgets/navbar/Navbar.jsx";
+import { getExams, deleteExam, getSubmits } from "../features/exam/api/examApi.js";
 
 export default function Admin() {
     const navigate = useNavigate();
