@@ -1,95 +1,47 @@
-import Editor from "@monaco-editor/react";
+import { Link } from "react-router-dom";
 
-export default function ExamCard({
-    i,
-    task,
-    codes,
-    outputs,
-    handleChange,
-    runCode,
-    isSubmitted
-}) {
+export default function ExamCard({ id, title, date, result }) {
     return (
-        <div className="bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 p-8 shadow-xl flex flex-col items-center">
-            <article className="w-full">
-                <div className="flex flex-col justify-between mb-5">
-                    <h2 className="text-[#fca311] font-black text-2xl">
-                        Задание {i + 1}
-                    </h2>
+        <div className="bg-[#1b263b] rounded-3xl p-8 border border-[#415a77] hover:border-[#fca311] transition duration-300 ease-in-out">
+            <h2 className="text-2xl font-bold text-[#fca311]">
+                {title}
+            </h2>
 
-                    <details className="mt-5">
-                        <summary className="cursor-pointer text-gray-300">
-                            Показать
-                        </summary>
+            <p className="text-gray-400 mt-2">
+                Дата: {date}
+            </p>
 
-                        <p className="mt-4 text-white max-w-sm whitespace-pre-wrap overflow-x-auto">
-                            {task}
+            <div className="mt-5">
+                {result?.checked ? (
+                    <>
+                        <p className="text-green-400 font-bold">
+                            Проверено ✅
                         </p>
-                    </details>
-                </div>
-            </article>
 
-            <Editor
-                height="300px"
-                language="javascript"
-                theme="vs-dark"
-                value={codes[i]}
-                onChange={(v) => handleChange(i, v)}
-                onMount={(editor, monaco) => {
+                        <p className="text-xl mt-2 text-white font-bold">
+                            Балл:{" "}
+                            <span className="text-[#fca311] font-black">
+                                {result.totalScore ?? 0}
+                            </span>
+                        </p>
+                    </>
+                ) : result ? (
+                    <p className="text-yellow-400">
+                        На проверке ⏳
+                    </p>
+                ) : (
+                    <p className="text-gray-400">
+                        Не отправлено
+                    </p>
+                )}
+            </div>
 
-                    const blockedKeys = [
-                        monaco.KeyCode.KeyC,
-                        monaco.KeyCode.KeyV,
-                        monaco.KeyCode.KeyX,
-                        monaco.KeyCode.KeyA
-                    ];
-
-                    blockedKeys.forEach((key) => {
-                        editor.addCommand(
-                            monaco.KeyMod.CtrlCmd | key,
-                            () => { }
-                        );
-                    });
-
-
-                    const node = editor.getDomNode();
-
-                    node?.addEventListener("copy", (e) => e.preventDefault());
-                    node?.addEventListener("paste", (e) => e.preventDefault());
-                    node?.addEventListener("cut", (e) => e.preventDefault());
-                    node?.addEventListener("contextmenu", (e) => e.preventDefault());
-
-
-                    editor.onKeyDown((e) => {
-                        const ctrl = e.ctrlKey || e.metaKey;
-
-                        if (ctrl && blockedKeys.includes(e.keyCode)) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                        }
-                    });
-                }}
-                options={{
-                    readOnly: isSubmitted,
-                    minimap: { enabled: false },
-                    contextmenu: false,
-                    copyWithSyntaxHighlighting: false,
-                    quickSuggestions: true,
-                    suggestOnTriggerCharacters: false
-                }}
-            />
-
-            <button
-                disabled={isSubmitted}
-                onClick={() => runCode(i)}
-                className="mt-5 bg-[#fca311] hover:bg-[#ffb703] px-6 py-3 rounded-2xl font-bold cursor-pointer w-full"
+            <Link
+                to={`/exam/${id}`}
+                className="mt-6 inline-block bg-[#fca311] px-6 py-3 rounded-xl font-bold text-black"
             >
-                Проверить
-            </button>
-
-            <pre className="bg-black/50 mt-5 rounded-2xl p-5 text-white h-28 overflow-auto w-full">
-                {outputs[i]}
-            </pre>
+                Открыть
+            </Link>
         </div>
     );
 }
